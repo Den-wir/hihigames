@@ -10,9 +10,51 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div class="bg-shapes" aria-hidden="true">
+    <span class="bg-shape sq" style="left:4%;top:8%;width:42px;height:42px;background:#ff8a3d;transform:rotate(18deg)"></span>
+    <span class="bg-shape tri" style="left:14%;top:22%;border-width:0 22px 38px 22px;border-color:transparent transparent #3d9be9 transparent;transform:rotate(-12deg)"></span>
+    <span class="bg-shape circ" style="left:8%;top:48%;width:28px;height:28px;background:#ff8fab"></span>
+    <span class="bg-shape dia" style="left:3%;top:72%;width:34px;height:34px;background:#3cbe7a;transform:rotate(45deg)"></span>
+    <span class="bg-shape ring" style="left:18%;top:86%;width:46px;height:46px;border-color:#ffe566"></span>
+    <span class="bg-shape sq" style="left:26%;top:6%;width:24px;height:24px;background:#3cbe7a;transform:rotate(32deg)"></span>
+    <span class="bg-shape circ" style="left:32%;top:38%;width:18px;height:18px;background:#3d9be9"></span>
+    <span class="bg-shape tri" style="left:28%;top:64%;border-width:0 16px 28px 16px;border-color:transparent transparent #ff8a3d transparent;transform:rotate(28deg)"></span>
+    <span class="bg-shape hex" style="left:22%;top:14%;width:36px;height:20px;background:#ff8fab"></span>
+    <span class="bg-shape sq" style="left:42%;top:12%;width:20px;height:20px;background:#ffe566;transform:rotate(8deg)"></span>
+    <span class="bg-shape dia" style="left:48%;top:28%;width:26px;height:26px;background:#3d9be9;transform:rotate(45deg)"></span>
+    <span class="bg-shape ring" style="left:38%;top:78%;width:38px;height:38px;border-color:#ff8fab"></span>
+    <span class="bg-shape circ" style="left:52%;top:88%;width:22px;height:22px;background:#3cbe7a"></span>
+    <span class="bg-shape tri" style="left:58%;top:6%;border-width:0 20px 34px 20px;border-color:transparent transparent #ff8fab transparent;transform:rotate(40deg)"></span>
+    <span class="bg-shape sq" style="left:62%;top:42%;width:36px;height:36px;background:#ffe566;transform:rotate(-22deg)"></span>
+    <span class="bg-shape hex" style="left:54%;top:58%;width:42px;height:24px;background:#3d9be9"></span>
+    <span class="bg-shape dia" style="left:68%;top:18%;width:30px;height:30px;background:#ff8a3d;transform:rotate(52deg)"></span>
+    <span class="bg-shape circ" style="left:72%;top:68%;width:16px;height:16px;background:#ffe566"></span>
+    <span class="bg-shape ring" style="left:78%;top:8%;width:52px;height:52px;border-color:#3cbe7a"></span>
+    <span class="bg-shape sq" style="left:84%;top:32%;width:28px;height:28px;background:#ff8fab;transform:rotate(14deg)"></span>
+    <span class="bg-shape tri" style="left:88%;top:54%;border-width:0 18px 32px 18px;border-color:transparent transparent #3cbe7a transparent;transform:rotate(-30deg)"></span>
+    <span class="bg-shape dia" style="left:92%;top:78%;width:38px;height:38px;background:#3d9be9;transform:rotate(45deg)"></span>
+    <span class="bg-shape circ" style="left:80%;top:88%;width:24px;height:24px;background:#ff8a3d"></span>
+    <span class="bg-shape hex" style="left:90%;top:12%;width:32px;height:18px;background:#ffe566"></span>
+    <span class="bg-shape sq" style="left:10%;top:34%;width:16px;height:16px;background:#ffe566;transform:rotate(45deg)"></span>
+    <span class="bg-shape ring" style="left:96%;top:44%;width:30px;height:30px;border-color:#ff8a3d"></span>
+    <span class="bg-shape tri" style="left:40%;top:50%;border-width:0 14px 24px 14px;border-color:transparent transparent #3cbe7a transparent;transform:rotate(8deg)"></span>
+    <span class="bg-shape circ" style="left:74%;top:24%;width:14px;height:14px;background:#3d9be9"></span>
+    <span class="bg-shape sq" style="left:6%;top:92%;width:22px;height:22px;background:#3d9be9;transform:rotate(-18deg)"></span>
+    <span class="bg-shape dia" style="left:34%;top:96%;width:20px;height:20px;background:#ff8fab;transform:rotate(45deg)"></span>
+  </div>
   <header class="top" id="site-header">
     <div class="top-left">
-      <a class="logo" href="#/"><span class="logo-mark">🧸</span> Игра после опыта</a>
+      <a class="logo" href="#/">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" class="logo-icon">
+            <path d="M16 2.8 26.4 21.2H5.6Z" fill="#3d9be9"/>
+            <rect x="3.2" y="16.2" width="13.2" height="13.2" rx="2.4" fill="#3cbe7a" transform="rotate(-10 9.8 22.8)"/>
+            <circle cx="22.4" cy="22.2" r="7.1" fill="#ff8a3d"/>
+            <circle cx="20.4" cy="20.2" r="2.1" fill="#ffe0c2"/>
+          </svg>
+        </span>
+        Игра после опыта
+      </a>
       <div class="role-switch" id="role-switch" role="group" aria-label="Режим">
         <button type="button" class="role-btn" data-role="teacher">👩‍🏫 Учитель</button>
         <button type="button" class="role-btn" data-role="child">🧒 Ребёнок</button>
