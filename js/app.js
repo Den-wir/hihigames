@@ -11,6 +11,7 @@
 
   function setRole(role) {
     localStorage.setItem(ROLE_KEY, role);
+    body.classList.toggle('child-mode', role === 'child');
     renderRoleSwitch();
     route();
   }
@@ -41,6 +42,16 @@
 
   function go(path) {
     location.hash = path;
+  }
+
+  function prefersReduceMotion() {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function afterPaint(fn) {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(fn);
+    });
   }
 
   function fmtWhen(iso) {
@@ -105,6 +116,14 @@
       ['preview', '#/preview/' + game.id, '2', 'Попробовать'],
       ['results', '#/results/' + game.id, '3', 'Обсудить']
     ];
+    const existing = nav.querySelectorAll('.step');
+    if (existing.length === steps.length) {
+      steps.forEach(function (s, i) {
+        existing[i].classList.toggle('active', s[0] === active);
+        existing[i].setAttribute('href', s[1]);
+      });
+      return;
+    }
     nav.innerHTML = steps.map(function (s) {
       return '<a class="step' + (s[0] === active ? ' active' : '') + '" href="' + s[1] + '"><span class="n">' + s[2] + '</span>' + s[3] + '</a>';
     }).join('');
@@ -144,7 +163,7 @@
     const gamesList = allGames.map(function(g) {
       const isActive = g.id === game.id;
       return '<div style="display:flex; gap:8px; margin-bottom:8px; align-items:stretch;">' +
-        '<button class="btn ' + (isActive ? 'primary' : 'ghost') + '" type="button" data-switch-game="' + g.id + '" style="flex:1; justify-content:flex-start;">' + (isActive ? '👉 ' : '') + esc(g.title) + '</button>' +
+        '<button class="btn ' + (isActive ? 'primary' : 'ghost') + '" type="button" data-switch-game="' + g.id + '" style="flex:1; justify-content:flex-start;">' + (isActive ? '' : '') + esc(g.title) + '</button>' +
         '<button class="btn ghost" type="button" data-delete-game="' + g.id + '" title="Удалить игру" style="color:#d65a12; border-color:#ffc38a; padding:12px;" aria-label="Удалить">🗑️</button>' +
       '</div>';
     }).join('');
@@ -970,37 +989,108 @@
         game.items.map(function (item) {
           let vis = pictureHtml(item);
           if (game.layout === 'sorter' && item.shape) {
-            vis = '<div style="width:60px;height:60px;margin:0 auto;background:'+item.color+';clip-path:'+getClipPath(item.shape)+'"></div>';
+            vis = '<div class="print-shape" style="background:' + item.color + ';clip-path:' + getClipPath(item.shape) + '"></div>';
           }
-          return '<div class="print-card">' + vis + '<strong>' + esc(item.name) + '</strong></div>';
+          return '<div class="print-card"><div class="print-pic">' + vis + '</div><strong>' + esc(item.name) + '</strong></div>';
         }).join('') +
       '</div>';
     document.getElementById('print-btn').onclick = function () { window.print(); };
   }
 
-  function route() {
-    root.className = 'wrap';
-    const parts = hashParts();
-    const page = parts[0] || '';
+  var routeGen = 0;
+  var firstRoute = true;
+  var lastViewKey = '';
+
+  function viewKey() {
+    return (location.hash || '#/') + '|' + getRole();
+  }
+
+  function applyRoute() {
+    const parts0 = hashParts();
+    const page0 = parts0[0] || '';
     const role = getRole();
 
     if (role === 'child') {
-      if (['', 'child', 'play', 'session'].indexOf(page) === -1) { go('/'); return; }
-    } else {
-      if (page === 'child') { go('/preview/' + (parts[1] || '')); return; }
+      if (['', 'child', 'play', 'session'].indexOf(page0) === -1) {
+        history.replaceState(null, '', '#/');
+      }
+    } else if (page0 === 'child') {
+      history.replaceState(null, '', '#/preview/' + (parts0[1] || ''));
     }
 
-    if (!page) return renderHome();
-    if (page === 'create') return renderCreate();
-    if (page === 'create-type') return renderCreateType();
-    if (page === 'editor') return renderEditor(parts[1]);
-    if (page === 'preview') return renderStart(parts[1], true);
-    if (page === 'child') return renderStart(parts[1], false);
-    if (page === 'play') return renderPlay(parts[1]);
-    if (page === 'session') return renderSession(parts[1]);
-    if (page === 'results') return renderResults(parts[1]);
-    if (page === 'cards') return renderCards(parts[1]);
-    renderHome();
+    root.className = 'wrap';
+    const parts = hashParts();
+    const page = parts[0] || '';
+
+    if (!page) renderHome();
+    else if (page === 'create') renderCreate();
+    else if (page === 'create-type') renderCreateType();
+    else if (page === 'editor') renderEditor(parts[1]);
+    else if (page === 'preview') renderStart(parts[1], true);
+    else if (page === 'child') renderStart(parts[1], false);
+    else if (page === 'play') renderPlay(parts[1]);
+    else if (page === 'session') renderSession(parts[1]);
+    else if (page === 'results') renderResults(parts[1]);
+    else if (page === 'cards') renderCards(parts[1]);
+    else renderHome();
+  }
+
+  function showPage(gen) {
+    if (gen !== routeGen) return;
+    if (prefersReduceMotion()) {
+      root.classList.remove('page-leave', 'page-enter');
+      root.classList.add('page-show');
+      return;
+    }
+    root.classList.remove('page-leave', 'page-show');
+    root.classList.add('page-enter');
+    afterPaint(function () {
+      if (gen !== routeGen) return;
+      root.classList.remove('page-enter');
+      root.classList.add('page-show');
+    });
+  }
+
+  function route() {
+    const gen = ++routeGen;
+    const sameView = !firstRoute && lastViewKey === viewKey();
+    const skipOut = firstRoute || sameView || prefersReduceMotion();
+    firstRoute = false;
+
+    function swap() {
+      if (gen !== routeGen) return;
+      applyRoute();
+      lastViewKey = viewKey();
+      if (sameView) {
+        root.classList.remove('page-leave', 'page-enter');
+        root.classList.add('page-show');
+        return;
+      }
+      showPage(gen);
+    }
+
+    if (skipOut) {
+      swap();
+      return;
+    }
+
+    root.classList.remove('page-show', 'page-in');
+    root.classList.add('page-leave');
+
+    let done = false;
+    function finish() {
+      if (done || gen !== routeGen) return;
+      done = true;
+      root.removeEventListener('transitionend', onEnd);
+      swap();
+    }
+    function onEnd(e) {
+      if (e.target !== root) return;
+      if (e.propertyName && e.propertyName !== 'opacity' && e.propertyName !== 'transform') return;
+      finish();
+    }
+    root.addEventListener('transitionend', onEnd);
+    setTimeout(finish, 340);
   }
 
   document.getElementById('role-switch').addEventListener('click', function (e) {
