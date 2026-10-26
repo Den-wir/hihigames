@@ -237,20 +237,258 @@
     });
   }
 
+  // === AI ГЕНЕРАТОР ===
+
+  function generateAiGame(topic) {
+    const id = Store.uid();
+    let game = {
+      id: id,
+      layout: 'baskets',
+      title: topic, // Убрали приставку "Игра:"
+      question: 'Куда положим этот предмет?',
+      category_a: 'Сюда',
+      category_b: 'Туда',
+      items: []
+    };
+
+    const t = topic.toLowerCase();
+
+    if (t.includes('животн') || t.includes('звер') || t.includes('питом')) {
+      game.category_a = 'Домашние';
+      game.category_b = 'Дикие';
+      game.items = [
+        { name: 'Кошка', emoji: '🐱', category: 'a', property_prompt: 'Она живет с человеком?', explanation: 'Кошка — домашнее животное.' },
+        { name: 'Собака', emoji: '🐶', category: 'a', property_prompt: 'Она живет с человеком?', explanation: 'Собака — домашнее животное.' },
+        { name: 'Волк', emoji: '🐺', category: 'b', property_prompt: 'Он живет в лесу?', explanation: 'Волк — дикое животное.' },
+        { name: 'Лиса', emoji: '🦊', category: 'b', property_prompt: 'Она живет в лесу?', explanation: 'Лиса — дикое животное.' },
+        { name: 'Корова', emoji: '🐮', category: 'a', property_prompt: 'Она дает молоко?', explanation: 'Корова — домашнее животное.' },
+        { name: 'Медведь', emoji: '🐻', category: 'b', property_prompt: 'Он спит в берлоге?', explanation: 'Медведь — дикое животное.' }
+      ];
+    } else if (t.includes('фрукт') || t.includes('овощ') || t.includes('еда') || t.includes('съедоб')) {
+      game.category_a = 'Фрукты';
+      game.category_b = 'Овощи';
+      game.items = [
+        { name: 'Яблоко', emoji: '🍎', category: 'a', property_prompt: 'Оно сладкое?', explanation: 'Яблоко — фрукт.' },
+        { name: 'Морковь', emoji: '🥕', category: 'b', property_prompt: 'Она растет в земле?', explanation: 'Морковь — овощ.' },
+        { name: 'Банан', emoji: '🍌', category: 'a', property_prompt: 'Он желтый?', explanation: 'Банан — фрукт.' },
+        { name: 'Огурец', emoji: '🥒', category: 'b', property_prompt: 'Он зеленый?', explanation: 'Огурец — овощ.' },
+        { name: 'Апельсин', emoji: '🍊', category: 'a', property_prompt: 'Он круглый?', explanation: 'Апельсин — фрукт.' },
+        { name: 'Помидор', emoji: '🍅', category: 'b', property_prompt: 'Он красный?', explanation: 'Помидор — овощ.' }
+      ];
+    } else if (t.includes('тон') || t.includes('плав') || t.includes('вод')) {
+      game.category_a = 'Плавает';
+      game.category_b = 'Тонет';
+      game.items = [
+        { name: 'Камень', emoji: '🪨', category: 'b', property_prompt: 'Он тяжелый?', explanation: 'Камень тонет.' },
+        { name: 'Мяч', emoji: '⚽', category: 'a', property_prompt: 'Он легкий?', explanation: 'Мяч плавает.' },
+        { name: 'Ложка', emoji: '🥄', category: 'b', property_prompt: 'Она металлическая?', explanation: 'Металлическая ложка тонет.' },
+        { name: 'Пёрышко', emoji: '🪶', category: 'a', property_prompt: 'Оно легкое?', explanation: 'Пёрышко плавает.' },
+        { name: 'Монета', emoji: '🪙', category: 'b', property_prompt: 'Она тяжелая?', explanation: 'Монета тонет.' },
+        { name: 'Пробка', emoji: '🍾', category: 'a', property_prompt: 'Она легкая?', explanation: 'Пробка плавает.' }
+      ];
+    } else if (t.includes('транспорт') || t.includes('машин')) {
+      game.category_a = 'Наземный';
+      game.category_b = 'Воздушный';
+      game.items = [
+        { name: 'Машина', emoji: '🚗', category: 'a', property_prompt: 'Он ездит по земле?', explanation: 'Машина — наземный транспорт.' },
+        { name: 'Самолёт', emoji: '✈️', category: 'b', property_prompt: 'Он летает?', explanation: 'Самолёт — воздушный транспорт.' },
+        { name: 'Автобус', emoji: '🚌', category: 'a', property_prompt: 'Он ездит по земле?', explanation: 'Автобус — наземный транспорт.' },
+        { name: 'Вертолёт', emoji: '🚁', category: 'b', property_prompt: 'Он летает?', explanation: 'Вертолёт — воздушный транспорт.' },
+        { name: 'Поезд', emoji: '🚂', category: 'a', property_prompt: 'Он ездит по рельсам?', explanation: 'Поезд — наземный транспорт.' },
+        { name: 'Ракета', emoji: '🚀', category: 'b', property_prompt: 'Она летит в космос?', explanation: 'Ракета — воздушный транспорт.' }
+      ];
+    } else {
+      game.category_a = 'Съедобное';
+      game.category_b = 'Несъедобное';
+      game.items = [
+        { name: 'Яблоко', emoji: '🍎', category: 'a', property_prompt: 'Это можно съесть?', explanation: 'Яблоко съедобное.' },
+        { name: 'Кирпич', emoji: '🧱', category: 'b', property_prompt: 'Это можно съесть?', explanation: 'Кирпич несъедобный.' },
+        { name: 'Хлеб', emoji: '🍞', category: 'a', property_prompt: 'Это можно съесть?', explanation: 'Хлеб съедобный.' },
+        { name: 'Ножницы', emoji: '✂️', category: 'b', property_prompt: 'Это можно съесть?', explanation: 'Ножницы несъедобные.' },
+        { name: 'Сыр', emoji: '🧀', category: 'a', property_prompt: 'Это можно съесть?', explanation: 'Сыр съедобный.' },
+        { name: 'Ключ', emoji: '🔑', category: 'b', property_prompt: 'Это можно съесть?', explanation: 'Ключ несъедобный.' }
+      ];
+    }
+
+    game.items = game.items.map(function(it) {
+      return Object.assign({
+        id: Store.uid(),
+        icon_key: 'box',
+        image: '',
+        shape: '',
+        color: '',
+        odd: false,
+        round: 1,
+        order: 1,
+        pair: ''
+      }, it);
+    });
+
+    return game;
+  }
+
+  function showAiPromptModal() {
+    const modalHtml = `
+      <div id="ai-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: grid; place-items: center; padding: 20px;">
+        <div class="panel" style="max-width: 520px; width: 100%; position: relative; animation: aiPopIn 0.3s ease;">
+          <h2>✨ AI-помощник</h2>
+          <p class="muted">Опишите тему или опыт, который вы провели с детьми. Можно написать текстом или надиктовать голосом.</p>
+
+          <label>Тема игры</label>
+          <div class="ai-input-row">
+            <input type="text" id="ai-topic" placeholder="Например: Домашние и дикие животные">
+            <button type="button" class="mic-btn" id="ai-mic" title="Надиктовать голосом" aria-label="Записать голос">🎤</button>
+          </div>
+
+          <div class="ai-hint">💡 Нажмите на микрофон и произнесите тему — текст появится в поле.</div>
+
+          <div class="ai-listening" id="ai-listening">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span>Слушаю…</span>
+            <span class="time" id="ai-timer">0:00</span>
+          </div>
+
+          <div id="ai-loading" style="display: none; text-align: center; padding: 20px;">
+            <p>🧠 Думаю над игрой...</p>
+            <div style="border: 4px solid #f3f3f3; border-top: 4px solid var(--blue); border-radius: 50%; width: 40px; height: 40px; animation: aiSpin 1s linear infinite; margin: 0 auto;"></div>
+          </div>
+
+          <div class="actions" style="justify-content: flex-end;">
+            <button class="btn ghost" id="ai-cancel">Отмена</button>
+            <button class="btn orange" id="ai-generate">Сгенерировать</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    const modal = document.getElementById('ai-modal');
+    const input = document.getElementById('ai-topic');
+    const genBtn = document.getElementById('ai-generate');
+    const cancelBtn = document.getElementById('ai-cancel');
+    const loading = document.getElementById('ai-loading');
+    const micBtn = document.getElementById('ai-mic');
+    const listening = document.getElementById('ai-listening');
+    const timerEl = document.getElementById('ai-timer');
+
+    let recording = false;
+    let timerId = null;
+    let seconds = 0;
+
+    const VOICE_PHRASES = [
+      'Домашние и дикие животные',
+      'Фрукты и овощи',
+      'Что тонет, а что плавает',
+      'Наземный и воздушный транспорт',
+      'Съедобное и несъедобное'
+    ];
+
+    function startRecording() {
+      recording = true;
+      seconds = 0;
+      timerEl.textContent = '0:00';
+      micBtn.classList.add('recording');
+      micBtn.textContent = '⏹';
+      micBtn.title = 'Остановить запись';
+      listening.classList.add('active');
+      input.disabled = true;
+
+      timerId = setInterval(function () {
+        seconds++;
+        const m = Math.floor(seconds / 60);
+        const s = String(seconds % 60).padStart(2, '0');
+        timerEl.textContent = m + ':' + s;
+        if (seconds >= 5) stopRecording(true);
+      }, 1000);
+    }
+
+    function stopRecording(autoStop) {
+      if (!recording) return;
+      recording = false;
+      clearInterval(timerId);
+      micBtn.classList.remove('recording');
+      micBtn.textContent = '🎤';
+      micBtn.title = 'Надиктовать голосом';
+      listening.classList.remove('active');
+      input.disabled = false;
+
+      if (autoStop) {
+        const phrase = VOICE_PHRASES[Math.floor(Math.random() * VOICE_PHRASES.length)];
+        input.value = phrase;
+        input.focus();
+        input.style.borderColor = 'var(--green)';
+        setTimeout(function () { input.style.borderColor = ''; }, 800);
+      }
+    }
+
+    micBtn.onclick = function () {
+      if (recording) stopRecording(false);
+      else startRecording();
+    };
+
+    cancelBtn.onclick = function () {
+      if (recording) stopRecording(false);
+      modal.remove();
+    };
+
+    genBtn.onclick = function () {
+      if (recording) stopRecording(false);
+      const topic = input.value.trim();
+      if (!topic) {
+        input.style.borderColor = '#ff8fab';
+        input.focus();
+        return;
+      }
+
+      loading.style.display = 'block';
+      genBtn.disabled = true;
+      cancelBtn.disabled = true;
+      micBtn.disabled = true;
+
+      setTimeout(function () {
+        const generatedGame = generateAiGame(topic);
+        Store.saveGame(generatedGame);
+        modal.remove();
+        go('/editor/' + generatedGame.id);
+      }, 1400);
+    };
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !recording) genBtn.click();
+    });
+
+    input.focus();
+  }
+
+  // === /AI ГЕНЕРАТОР ===
+
   function renderCreate() {
     const game = Store.currentGame();
     setChrome(false, game, 'home');
     const templates = Store.getTemplates();
 
+    const aiTemplate = { id: 'ai', title: 'Сгенерировать с AI', desc: 'Придумать игру по теме — текстом или голосом' };
+    const allTemplates = [aiTemplate].concat(templates);
+
     root.innerHTML =
       '<section class="hero">' +
         '<p class="eyebrow">Новая игра</p>' +
         '<h1>Выберите, с чего начать</h1>' +
-        '<p class="lead">Можно создать игру с нуля или взять готовый шаблон по теме.</p>' +
+        '<p class="lead">Можно создать игру с нуля, взять готовый шаблон или доверить подбор предметов AI.</p>' +
       '</section>' +
       '<div class="path" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">' +
-        templates.map(function(t) {
-          return '<a class="path-card ' + (t.id === 'empty' ? 'blue' : 'green') + '" href="#" data-template="' + t.id + '">' +
+        allTemplates.map(function(t) {
+          if (t.id === 'ai') {
+            return '<a class="path-card ai-gradient" href="#" data-template="ai">' +
+              '<strong>' + esc(t.title) + '</strong>' +
+              '<p>' + esc(t.desc) + '</p>' +
+            '</a>';
+          }
+          const cardClass = t.id === 'empty' ? 'blue' : 'green';
+          return '<a class="path-card ' + cardClass + '" href="#" data-template="' + t.id + '">' +
             '<strong>' + esc(t.title) + '</strong>' +
             '<p>' + esc(t.desc) + '</p>' +
           '</a>';
@@ -262,7 +500,9 @@
       card.onclick = function(e) {
         e.preventDefault();
         const tmplId = card.dataset.template;
-        if (tmplId === 'empty') {
+        if (tmplId === 'ai') {
+          showAiPromptModal();
+        } else if (tmplId === 'empty') {
           go('/create-type');
         } else {
           const newGame = Store.createFromTemplate(tmplId);
@@ -596,7 +836,6 @@
     
     if (layout === 'sorter') {
       const houseColors = { circle: '#8ed0ff', square: '#8ee0b0', triangle: '#ffe566', rectangle: '#ff8fab' };
-      // Перемешиваем домики и оставшиеся фигуры при каждом рендере, как в "Что лишнее?"
       const housesShuffled = shuffle(['circle', 'square', 'triangle', 'rectangle']);
       const left = remainingItems(session, game);
       const leftShuffled = shuffle(left.slice());
@@ -663,7 +902,6 @@
     }
     else if (layout === 'sequence') {
       const left = remainingItems(session, game);
-      // Перемешиваем оставшиеся карточки при каждом рендере, как в "Что лишнее?"
       const leftShuffled = shuffle(left.slice());
       const sortedItems = game.items.slice().sort(function(a,b){ return a.order - b.order; });
       playAreaHtml = 
@@ -684,13 +922,15 @@
     }
     else {
       const left = remainingItems(session, game);
+      const leftShuffled = shuffle(left.slice()); // Добавлено перемешивание для корзин
+      
       playAreaHtml = 
         '<div class="baskets">' +
           '<div class="basket a" data-category="a" tabindex="0"><span class="basket-icon" aria-hidden="true">~</span><strong>' + esc(game.category_a) + '</strong></div>' +
           '<div class="basket b" data-category="b" tabindex="0"><span class="basket-icon" aria-hidden="true">↓</span><strong>' + esc(game.category_b) + '</strong></div>' +
         '</div>' +
         '<div class="tray" id="tray">' +
-          left.map(function (item) {
+          leftShuffled.map(function (item) { // Используем leftShuffled
             return '<button type="button" class="card" draggable="true" data-item-id="' + item.id + '">' +
               pictureHtml(item) + '<span class="card-name">' + esc(item.name) + '</span></button>';
           }).join('') +
@@ -820,6 +1060,7 @@
       document.querySelectorAll('.memory-card').forEach(function(card) {
         card.onclick = function() {
           if (busy || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+          
           card.classList.add('flipped');
           playSound('correct');
           
@@ -827,6 +1068,7 @@
             memFirst = card;
           } else {
             if (memFirst === card) return;
+            
             const id1 = memFirst.dataset.itemId;
             const id2 = card.dataset.itemId;
             const item1 = game.items.find(function(i){ return i.id === id1; });
@@ -836,6 +1078,7 @@
               session.attempts.push({ itemId: id1, chosen: 'pair', correct: true });
               session.attempts.push({ itemId: id2, chosen: 'pair', correct: true });
               Store.updateSession(session);
+              
               setTimeout(function(){
                 memFirst.classList.add('matched');
                 card.classList.add('matched');
@@ -846,10 +1089,14 @@
             } else {
               playSound('wrong');
               busy = true;
+              
+              const firstCard = memFirst;
+              const secondCard = card;
+              memFirst = null;
+              
               setTimeout(function(){
-                memFirst.classList.remove('flipped');
-                card.classList.remove('flipped');
-                memFirst = null;
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
                 busy = false;
               }, 800);
             }
