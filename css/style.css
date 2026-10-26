@@ -49,9 +49,7 @@ body {
   background: none;
   border-style: solid;
 }
-.bg-shape.hex {
-  position: absolute;
-}
+.bg-shape.hex { position: absolute; }
 .bg-shape.hex::before,
 .bg-shape.hex::after {
   content: "";
@@ -596,7 +594,6 @@ body.child-mode .top nav { display: none; }
   object-fit: contain;
 }
 
-/* Новые стили для Лишнего */
 .odd-board {
   display: flex;
   flex-wrap: wrap;
@@ -613,7 +610,6 @@ body.child-mode .top nav { display: none; }
   justify-content: center;
 }
 
-/* Новые стили для Цепочки */
 .seq-board {
   display: flex;
   justify-content: center;
@@ -639,127 +635,12 @@ body.child-mode .top nav { display: none; }
   object-fit: contain;
 }
 
-.memory-board {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  max-width: 500px;
-  margin: 20px auto;
-}
-.memory-card {
-  aspect-ratio: 1;
-  perspective: 1000px;
-  cursor: pointer;
-}
-.memory-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.4s;
-  transform-style: preserve-3d;
-}
-.memory-card.flipped .memory-inner, .memory-card.matched .memory-inner {
-  transform: rotateY(180deg);
-}
-.memory-front, .memory-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 20px;
-  display: grid;
-  place-items: center;
-  border: 4px solid #ffd37a;
-  background: #fff;
-}
-.memory-front {
-  background: var(--blue);
-  color: #fff;
-  font-size: 2rem;
-  font-weight: 800;
-}
-.memory-back {
-  background: #fff;
-  transform: rotateY(180deg);
-}
-.memory-card.matched {
-  opacity: 0.5;
-  pointer-events: none;
-}
-.memory-back svg, .memory-back img {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
-}
-
 @media (max-width: 600px) {
   .memory-board {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.memory-board {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  max-width: 500px;
-  margin: 20px auto;
-}
-.memory-card {
-  aspect-ratio: 1;
-  perspective: 1000px;
-  cursor: pointer;
-}
-.memory-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.4s;
-  transform-style: preserve-3d;
-}
-.memory-card.flipped .memory-inner, .memory-card.matched .memory-inner {
-  transform: rotateY(180deg);
-}
-.memory-front, .memory-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 20px;
-  display: grid;
-  place-items: center;
-  border: 4px solid #ffd37a;
-  background: #fff;
-}
-.memory-front {
-  background: var(--blue);
-  color: #fff;
-  font-size: 2rem;
-  font-weight: 800;
-}
-.memory-back {
-  background: #fff;
-  transform: rotateY(180deg);
-}
-.memory-card.matched {
-  opacity: 0.5;
-  pointer-events: none;
-}
-.memory-back svg, .memory-back img {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
-}
-
-@media (max-width: 600px) {
-  .memory-board {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 #app {
   transition: opacity .32s var(--ease), transform .32s var(--ease);
 }
@@ -783,4 +664,146 @@ body.child-mode .top nav { display: none; }
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* === AI КАРТОЧКА С ГРАДИЕНТНОЙ ОБВОДКОЙ === */
+.path-card.ai-gradient {
+  position: relative;
+  border: 4px solid transparent;
+  background:
+    linear-gradient(#fff0f4, #fff0f4) padding-box,
+    linear-gradient(135deg, #ff8a3d, #ff8fab, #3d9be9, #3cbe7a, #ffe566, #ff8a3d) border-box;
+  background-size: 100% 100%, 300% 300%;
+  animation: aiGradientShift 6s ease infinite;
+}
+.path-card.ai-gradient:hover {
+  box-shadow: 0 16px 0 rgba(255, 160, 70, .16), 0 0 20px rgba(255, 138, 61, .3);
+}
+@keyframes aiGradientShift {
+  0%   { background-position: 0% 50%, 0% 50%; }
+  50%  { background-position: 0% 50%, 100% 50%; }
+  100% { background-position: 0% 50%, 0% 50%; }
+}
+
+.ai-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  margin-bottom: 8px;
+}
+.ai-input-row input[type=text] {
+  flex: 1;
+  margin: 0 !important;
+}
+.mic-btn {
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid #8ed0ff;
+  background: #e8f7ff;
+  color: var(--blue-d);
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform .2s var(--ease), background-color var(--t) var(--ease), border-color var(--t) var(--ease), box-shadow .2s var(--ease);
+  padding: 0;
+}
+.mic-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  background: #d0ecff;
+}
+.mic-btn:disabled {
+  opacity: .5;
+  cursor: default;
+}
+.mic-btn.recording {
+  background: #ff8fab;
+  border-color: #d65a12;
+  color: #fff;
+  animation: micPulse 1.2s ease-in-out infinite;
+}
+@keyframes micPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 143, 171, .7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(255, 143, 171, 0);
+    transform: scale(1.05);
+  }
+}
+.ai-listening {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #ffe0c2;
+  border: 3px solid #ffc38a;
+  border-radius: 16px;
+  font-weight: 800;
+  color: var(--orange-d);
+  margin-bottom: 16px;
+}
+.ai-listening.active {
+  display: flex;
+}
+.ai-listening .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff8a3d;
+  animation: blinkDot 1s ease-in-out infinite;
+}
+.ai-listening .dot:nth-child(2) { animation-delay: .2s; }
+.ai-listening .dot:nth-child(3) { animation-delay: .4s; }
+@keyframes blinkDot {
+  0%, 100% { opacity: .3; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.3); }
+}
+.ai-listening .time {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  background: #fff;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 2px solid #ffc38a;
+  color: var(--orange-d);
+  font-size: .95rem;
+}
+.ai-hint {
+  font-size: .9rem;
+  color: var(--muted);
+  font-weight: 700;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .path-card.ai-gradient,
+  .mic-btn.recording,
+  .ai-listening .dot {
+    animation: none !important;
+  }
+}
+
+/* === AI МОДАЛЬНОЕ ОКНО === */
+#ai-modal .panel {
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  border: 4px solid var(--orange);
+}
+#ai-modal input[type=text] {
+  font-size: 1.1rem;
+  padding: 14px;
+}
+@keyframes aiPopIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes aiSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
