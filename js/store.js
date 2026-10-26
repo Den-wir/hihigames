@@ -64,19 +64,14 @@
       title: 'Что лишнее?',
       question: 'Найди лишний предмет',
       items: [
-        // Раунд 1 (Животные + яблоко)
         { id: 'o1', name: 'Собака', emoji: '🐶', odd: false, round: 1, explanation: 'Собака — животное.' },
         { id: 'o2', name: 'Кошка', emoji: '🐱', odd: false, round: 1, explanation: 'Кошка — животное.' },
         { id: 'o3', name: 'Яблоко', emoji: '🍎', odd: true, round: 1, explanation: 'Яблоко — это фрукт, а не животное.' },
         { id: 'o4', name: 'Корова', emoji: '🐮', odd: false, round: 1, explanation: 'Корова — животное.' },
-        
-        // Раунд 2 (Транспорт + банан)
         { id: 'o5', name: 'Машина', emoji: '🚗', odd: false, round: 2, explanation: 'Машина — это транспорт.' },
         { id: 'o6', name: 'Автобус', emoji: '🚌', odd: false, round: 2, explanation: 'Автобус — это транспорт.' },
         { id: 'o7', name: 'Банан', emoji: '🍌', odd: true, round: 2, explanation: 'Банан — это еда, а не транспорт.' },
         { id: 'o8', name: 'Велосипед', emoji: '🚲', odd: false, round: 2, explanation: 'Велосипед — это транспорт.' },
-        
-        // Раунд 3 (Посуда + мяч)
         { id: 'o9', name: 'Ложка', emoji: '🥄', odd: false, round: 3, explanation: 'Ложка — это посуда.' },
         { id: 'o10', name: 'Тарелка', emoji: '🍽️', odd: false, round: 3, explanation: 'Тарелка — это посуда.' },
         { id: 'o11', name: 'Мяч', emoji: '⚽', odd: true, round: 3, explanation: 'Мяч — это игрушка, а не посуда.' },
