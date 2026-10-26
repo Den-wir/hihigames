@@ -96,7 +96,7 @@
   }
 
   function empty() {
-    return { games: [waterDemo(), shapesDemo(), memoryDemo(), oddDemo(), seqDemo()], sessions: [], currentId: 'water' };
+    return { games: [shapesDemo(), memoryDemo(), oddDemo(), seqDemo()], sessions: [], currentId: 'water' };
   }
 
   function load() {
@@ -192,7 +192,6 @@
     getTemplates: function() {
       return [
         { id: 'empty', title: 'С нуля', desc: 'Создать новую игру с нуля' },
-        { id: 'water', title: 'Тонет или плавает', desc: 'Вода, опыт с тяжелыми и легкими предметами' },
         { id: 'shapes', title: 'Разложи фигурки', desc: 'Вкладыши: подобрать фигуру по форме' },
         { id: 'memory', title: 'Найди пару', desc: 'Мемори: найти две одинаковые картинки' },
         { id: 'odd', title: 'Что лишнее?', desc: 'Найти предмет, который не подходит к остальным' },
