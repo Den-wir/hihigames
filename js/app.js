@@ -244,10 +244,12 @@
     let game = {
       id: id,
       layout: 'baskets',
-      title: topic, // Убрали приставку "Игра:"
+      title: topic,
       question: 'Куда положим этот предмет?',
       category_a: 'Сюда',
       category_b: 'Туда',
+      icon_a: '📦', // Стикер для 1-й корзины по умолчанию
+      icon_b: '🎁', // Стикер для 2-й корзины по умолчанию
       items: []
     };
 
@@ -256,6 +258,8 @@
     if (t.includes('животн') || t.includes('звер') || t.includes('питом')) {
       game.category_a = 'Домашние';
       game.category_b = 'Дикие';
+      game.icon_a = '🏠'; // Домик
+      game.icon_b = '🌲'; // Ёлка
       game.items = [
         { name: 'Кошка', emoji: '🐱', category: 'a', property_prompt: 'Она живет с человеком?', explanation: 'Кошка — домашнее животное.' },
         { name: 'Собака', emoji: '🐶', category: 'a', property_prompt: 'Она живет с человеком?', explanation: 'Собака — домашнее животное.' },
@@ -267,6 +271,8 @@
     } else if (t.includes('фрукт') || t.includes('овощ') || t.includes('еда') || t.includes('съедоб')) {
       game.category_a = 'Фрукты';
       game.category_b = 'Овощи';
+      game.icon_a = '🍎'; // Яблоко
+      game.icon_b = '🥕'; // Морковка
       game.items = [
         { name: 'Яблоко', emoji: '🍎', category: 'a', property_prompt: 'Оно сладкое?', explanation: 'Яблоко — фрукт.' },
         { name: 'Морковь', emoji: '🥕', category: 'b', property_prompt: 'Она растет в земле?', explanation: 'Морковь — овощ.' },
@@ -275,20 +281,11 @@
         { name: 'Апельсин', emoji: '🍊', category: 'a', property_prompt: 'Он круглый?', explanation: 'Апельсин — фрукт.' },
         { name: 'Помидор', emoji: '🍅', category: 'b', property_prompt: 'Он красный?', explanation: 'Помидор — овощ.' }
       ];
-    } else if (t.includes('тон') || t.includes('плав') || t.includes('вод')) {
-      game.category_a = 'Плавает';
-      game.category_b = 'Тонет';
-      game.items = [
-        { name: 'Камень', emoji: '🪨', category: 'b', property_prompt: 'Он тяжелый?', explanation: 'Камень тонет.' },
-        { name: 'Мяч', emoji: '⚽', category: 'a', property_prompt: 'Он легкий?', explanation: 'Мяч плавает.' },
-        { name: 'Ложка', emoji: '🥄', category: 'b', property_prompt: 'Она металлическая?', explanation: 'Металлическая ложка тонет.' },
-        { name: 'Пёрышко', emoji: '🪶', category: 'a', property_prompt: 'Оно легкое?', explanation: 'Пёрышко плавает.' },
-        { name: 'Монета', emoji: '🪙', category: 'b', property_prompt: 'Она тяжелая?', explanation: 'Монета тонет.' },
-        { name: 'Пробка', emoji: '🍾', category: 'a', property_prompt: 'Она легкая?', explanation: 'Пробка плавает.' }
-      ];
     } else if (t.includes('транспорт') || t.includes('машин')) {
       game.category_a = 'Наземный';
       game.category_b = 'Воздушный';
+      game.icon_a = '🚗'; // Машина
+      game.icon_b = '✈️'; // Самолет
       game.items = [
         { name: 'Машина', emoji: '🚗', category: 'a', property_prompt: 'Он ездит по земле?', explanation: 'Машина — наземный транспорт.' },
         { name: 'Самолёт', emoji: '✈️', category: 'b', property_prompt: 'Он летает?', explanation: 'Самолёт — воздушный транспорт.' },
@@ -300,6 +297,8 @@
     } else {
       game.category_a = 'Съедобное';
       game.category_b = 'Несъедобное';
+      game.icon_a = '😋'; // Вкусно
+      game.icon_b = '🚫'; // Нельзя
       game.items = [
         { name: 'Яблоко', emoji: '🍎', category: 'a', property_prompt: 'Это можно съесть?', explanation: 'Яблоко съедобное.' },
         { name: 'Кирпич', emoji: '🧱', category: 'b', property_prompt: 'Это можно съесть?', explanation: 'Кирпич несъедобный.' },
@@ -381,7 +380,6 @@
     const VOICE_PHRASES = [
       'Домашние и дикие животные',
       'Фрукты и овощи',
-      'Что тонет, а что плавает',
       'Наземный и воздушный транспорт',
       'Съедобное и несъедобное'
     ];
@@ -389,7 +387,7 @@
     function startRecording() {
       recording = true;
       seconds = 0;
-      timerEl.textContent = '0:00';
+      timerEl.textContent = '0:00'; 
       micBtn.classList.add('recording');
       micBtn.textContent = '⏹';
       micBtn.title = 'Остановить запись';
@@ -926,11 +924,11 @@
       
       playAreaHtml = 
         '<div class="baskets">' +
-          '<div class="basket a" data-category="a" tabindex="0"><span class="basket-icon" aria-hidden="true">~</span><strong>' + esc(game.category_a) + '</strong></div>' +
-          '<div class="basket b" data-category="b" tabindex="0"><span class="basket-icon" aria-hidden="true">↓</span><strong>' + esc(game.category_b) + '</strong></div>' +
+          '<div class="basket a" data-category="a" tabindex="0"><span class="basket-icon" aria-hidden="true">' + esc(game.icon_a || '~') + '</span><strong>' + esc(game.category_a) + '</strong></div>' +
+          '<div class="basket b" data-category="b" tabindex="0"><span class="basket-icon" aria-hidden="true">' + esc(game.icon_b || '↓') + '</span><strong>' + esc(game.category_b) + '</strong></div>' +
         '</div>' +
         '<div class="tray" id="tray">' +
-          leftShuffled.map(function (item) { // Используем leftShuffled
+          leftShuffled.map(function (item) {
             return '<button type="button" class="card" draggable="true" data-item-id="' + item.id + '">' +
               pictureHtml(item) + '<span class="card-name">' + esc(item.name) + '</span></button>';
           }).join('') +
