@@ -290,7 +290,14 @@ input[type=color] { height: 52px; padding: 4px; cursor: pointer; }
 .basket.a { background: linear-gradient(#e8f7ff, #7ec8ff); color: var(--blue-d); }
 .basket.b { background: linear-gradient(#fff0e0, #ffb072); color: var(--orange-d); }
 .basket.over, .basket:focus { transform: scale(1.03); border-color: #fff; box-shadow: 0 0 0 6px rgba(255,255,255,.5); }
-.basket-icon { font-size: 3rem; line-height: 1; }
+.basket-icon {
+  font-size: 3rem; /* Увеличили размер, чтобы эмодзи выглядели как стикеры */
+  line-height: 1;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; /* Системный шрифт эмодзи Windows 10 */
+  display: block;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 0 rgba(0,0,0,0.1)); /* Легкая тень для объема */
+}
 .basket small { display: block; font-size: 1rem; font-weight: 800; opacity: .85; margin-top: 6px; }
 .tray {
   display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
